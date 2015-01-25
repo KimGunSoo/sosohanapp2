@@ -1,35 +1,35 @@
 package com.sosohanapp.wifiorder;
 
-import android.content.Intent;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
+import android.widget.TextView;
 
 
-public class MainActivity extends ActionBarActivity {
+public class WifiConnected extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_wifi_connected);
+        ConnectivityManager connect = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        /* get wifi information */
+        NetworkInfo wifiInfo = connect.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
-        Button connectedButton = (Button)findViewById(R.id.wificonnected);
-        connectedButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent wifiConnectedIntent = new Intent(MainActivity.this, WifiConnected.class);
-                startActivity(wifiConnectedIntent);
-            }
-        });
+        /* print wifi connected information */
+        TextView wifiConnectedText = (TextView)findViewById(R.id.wifi_connected);
+        wifiConnectedText.setText("WifiConnected : " + wifiInfo.isConnected());
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_wifi_connected, menu);
         return true;
     }
 
@@ -42,7 +42,7 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-             return true;
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
